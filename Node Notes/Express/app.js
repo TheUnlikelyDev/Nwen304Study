@@ -1,7 +1,13 @@
 const express = require('express');
 const app = express();//represents application
 
-var students = ['Sam','Steve','Kate'];
+app.use(express.json());// middleware
+
+const students = [
+{id: 1 , name: 'Sam'},
+{id: 2 , name: 'Max'},
+{id: 3 , name: 'Liam'}
+];
 /*
 app.get();
 app.put();
@@ -19,15 +25,22 @@ app.get('/api/students',(req,res) => {
 
 //:id to define the parameter.
 app.get('/api/students/:id', (req,res) => {
-  var student = students[req.params.id];
-  //res.send( "Student: " + student);
-  //res.send(req.params);
-  res.send(req.query);
+  const students = students.find(c => c.id === parseInt(req.params.id));
+  if(!students) return res.status(404).send('The student with that id was not found.');
+  res.send(course);
 });
 
-app.post('/api/students', (req, res) => {
-  const
+app.post('/api/students?name',(req,res) => {
+  const student = {
+    id: students.length +1,
+    name: req.body.name//need express.json()
+
+  };
+  students.push(student);
+  res.send(student);
 });
+
+
 
 
 /* PORT enivronment variable: and EV is a variable that changes/students
@@ -37,5 +50,6 @@ const port = process.env.PORT || 3000;
 
 
 app.listen(port,function(){
-  console.log('Listening on port ${port}...')  ;
+  //console.log('Listening on port ${port}...');
+  console.log('Listenting on port 3000');
 });
